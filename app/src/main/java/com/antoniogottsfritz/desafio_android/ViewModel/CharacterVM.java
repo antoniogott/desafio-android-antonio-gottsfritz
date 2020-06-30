@@ -1,0 +1,33 @@
+package com.antoniogottsfritz.desafio_android.ViewModel;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+
+import com.antoniogottsfritz.desafio_android.Model.Character;
+import com.antoniogottsfritz.desafio_android.Service.MarvelService;
+
+import java.util.List;
+
+public class CharacterVM extends ViewModel {
+    private static final int PAGE_SIZE = 20;
+    private MarvelService marvelService;
+
+    private MutableLiveData<List<Character>> characters;
+
+    public LiveData<List<Character>> getCharacters() {
+        if (characters == null) {
+            characters = new MutableLiveData<>();
+            characters.postValue(fetchCharacters());
+        }
+        return characters;
+    }
+
+    public CharacterVM() {
+        marvelService = new MarvelService();
+    }
+
+    private List<Character> fetchCharacters() {
+        return marvelService.getCharacters();
+    }
+}

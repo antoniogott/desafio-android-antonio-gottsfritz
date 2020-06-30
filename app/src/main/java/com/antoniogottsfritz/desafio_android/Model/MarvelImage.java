@@ -20,10 +20,6 @@ public class MarvelImage {
         Extension = extension;
     }
 
-    public String getUrl() {
-        return Path + "/standard_medium." + Extension;
-    }
-
     public String getUrl(String variant) {
         return Path + "/" + variant + "." + Extension;
     }

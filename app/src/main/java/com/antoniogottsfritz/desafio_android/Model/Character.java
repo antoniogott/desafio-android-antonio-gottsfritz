@@ -34,8 +34,8 @@ public class Character {
         return Thumbnail;
     }
 
-    public String getThumbnailUrl() {
-        return Thumbnail.getUrl();
+    public String getThumbnailUrl(String variant) {
+        return Thumbnail.getUrl(variant);
     }
 
     public void setThumbnail(MarvelImage thumbnail) {
