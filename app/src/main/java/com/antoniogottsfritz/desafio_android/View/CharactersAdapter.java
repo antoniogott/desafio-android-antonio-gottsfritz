@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.antoniogottsfritz.desafio_android.Model.MarvelCharacter;
+import com.antoniogottsfritz.desafio_android.Model.MarvelImage;
 import com.antoniogottsfritz.desafio_android.R;
 import com.bumptech.glide.RequestManager;
 
@@ -55,8 +56,8 @@ class CharactersAdapter extends PagedListAdapter<MarvelCharacter, CharactersAdap
             holder.nameChar.setText(character.getName());
 
             ImageView thumbChar = holder.thumbChar;
-            String imgUrl = character.getThumbnail().getUrl("standard_medium");
-            glide.load(imgUrl)
+            MarvelImage thumbnail = character.getThumbnail();
+            glide.load(thumbnail.getUrl("landscape_large"))
                     .thumbnail(glide.load(R.drawable.loading))
                     .into(thumbChar);
         }
