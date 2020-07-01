@@ -3,13 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:paddingHorizontal="10dp"
-    android:paddingVertical="5dp">
+    android:layout_height="100dp">
 
     <ImageView
         android:id="@+id/thumbChar"
-        android:layout_width="100dp"
+        android:layout_width="130dp"
         android:layout_height="100dp"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
