@@ -1,6 +1,8 @@
 package com.antoniogottsfritz.desafio_android.Model;
 
-public class Character {
+import java.io.Serializable;
+
+public class MarvelCharacter implements Serializable {
     private int Id;
     private String Name;
     private String Description;
@@ -32,10 +34,6 @@ public class Character {
 
     public MarvelImage getThumbnail() {
         return Thumbnail;
-    }
-
-    public String getThumbnailUrl(String variant) {
-        return Thumbnail.getUrl(variant);
     }
 
     public void setThumbnail(MarvelImage thumbnail) {

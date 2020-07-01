@@ -1,6 +1,5 @@
 package com.antoniogottsfritz.desafio_android.View;
 
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,20 +9,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.antoniogottsfritz.desafio_android.Model.Character;
+import com.antoniogottsfritz.desafio_android.Model.MarvelCharacter;
 import com.antoniogottsfritz.desafio_android.R;
 import com.bumptech.glide.RequestManager;
 
-import java.net.URI;
 import java.util.List;
 
 class CharactersAdapter extends RecyclerView.Adapter {
-    private List<Character> characters;
+    private List<MarvelCharacter> characters;
     private final RequestManager glide;
 
     private onCharacterSelectedListener characterSelectedListener;
 
-    public CharactersAdapter(List<Character> characters, RequestManager glideReqMgr) {
+    public CharactersAdapter(List<MarvelCharacter> characters, RequestManager glideReqMgr) {
         this.characters = characters;
         glide = glideReqMgr;
     }
@@ -37,16 +35,16 @@ class CharactersAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Character character = characters.get(position);
+        MarvelCharacter character = characters.get(position);
 
         if (holder instanceof CharacterViewHolder) {
-            ((CharacterViewHolder) holder).CharacterId = character.getId();
+            ((CharacterViewHolder) holder).Character = character;
 
             TextView nameChar = holder.itemView.findViewById((R.id.nameChar));
             nameChar.setText(character.getName());
 
             ImageView thumbChar = holder.itemView.findViewById(R.id.thumbChar);
-            String imgUrl = character.getThumbnailUrl("landscape_medium");
+            String imgUrl = character.getThumbnail().getUrl("landscape_medium");
             glide.load(imgUrl).into(thumbChar);
         }
     }
@@ -62,12 +60,12 @@ class CharactersAdapter extends RecyclerView.Adapter {
 
 
     public interface onCharacterSelectedListener {
-        public void onCharacterSelected(int id);
+        void onCharacterSelected(MarvelCharacter character, ImageView thumbnail);
     }
 
 
     class CharacterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        int CharacterId;
+        MarvelCharacter Character;
         TextView nameChar;
         ImageView thumbChar;
 
@@ -80,8 +78,8 @@ class CharactersAdapter extends RecyclerView.Adapter {
 
         @Override
         public void onClick(View v) {
-            int id = CharacterId;
-
+            if (characterSelectedListener != null)
+                characterSelectedListener.onCharacterSelected(Character, thumbChar);
         }
     }
 }

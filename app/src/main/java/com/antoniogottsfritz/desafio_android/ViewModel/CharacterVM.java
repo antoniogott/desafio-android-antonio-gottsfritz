@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.antoniogottsfritz.desafio_android.Model.Character;
+import com.antoniogottsfritz.desafio_android.Model.MarvelCharacter;
 import com.antoniogottsfritz.desafio_android.Service.MarvelService;
 
 import java.util.List;
@@ -13,9 +13,9 @@ public class CharacterVM extends ViewModel {
     private static final int PAGE_SIZE = 20;
     private MarvelService marvelService;
 
-    private MutableLiveData<List<Character>> characters;
+    private MutableLiveData<List<MarvelCharacter>> characters;
 
-    public LiveData<List<Character>> getCharacters() {
+    public LiveData<List<MarvelCharacter>> getCharacters() {
         if (characters == null) {
             characters = new MutableLiveData<>();
             characters.postValue(fetchCharacters());
@@ -27,7 +27,7 @@ public class CharacterVM extends ViewModel {
         marvelService = new MarvelService();
     }
 
-    private List<Character> fetchCharacters() {
+    private List<MarvelCharacter> fetchCharacters() {
         return marvelService.getCharacters();
     }
 }

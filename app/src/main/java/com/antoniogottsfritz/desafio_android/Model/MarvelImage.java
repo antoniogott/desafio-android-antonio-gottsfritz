@@ -1,5 +1,7 @@
 package com.antoniogottsfritz.desafio_android.Model;
 
+import java.util.Objects;
+
 public class MarvelImage {
     private String Path;
     private String Extension;
@@ -21,6 +23,10 @@ public class MarvelImage {
     }
 
     public String getUrl(String variant) {
-        return Path + "/" + variant + "." + Extension;
+        String fullPath = Path;
+        if (!Objects.equals(variant, "original")) {
+            fullPath += "/" + variant ;
+        }
+        return fullPath + "." + Extension;
     }
 }
