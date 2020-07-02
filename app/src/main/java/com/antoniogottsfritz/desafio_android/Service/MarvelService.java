@@ -6,26 +6,26 @@ import com.antoniogottsfritz.desafio_android.BuildConfig;
 import com.antoniogottsfritz.desafio_android.Model.API.ResultContainer;
 import com.antoniogottsfritz.desafio_android.Model.API.ResultWrapper;
 import com.antoniogottsfritz.desafio_android.Model.MarvelCharacter;
-import com.antoniogottsfritz.desafio_android.Model.MarvelImage;
 import com.antoniogottsfritz.desafio_android.Util;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MarvelService {
-    private static final int PAGE_SIZE = 20;
     private static final String API_URL = "https://gateway.marvel.com/";
 
-    private MarvelApi _api;
+    private static MarvelService _marvelService;
 
-    public MarvelService() {
+    private MarvelApi _api;
+    private int charPage = 0;
+
+    private MarvelService() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -33,6 +33,14 @@ public class MarvelService {
 
         _api = retrofit.create(MarvelApi.class);
     }
+
+    public static synchronized MarvelService getInstance() {
+        if (_marvelService == null) {
+            _marvelService = new MarvelService();
+        }
+        return _marvelService;
+    }
+
 
     public Map<String, String> createAuth() {
         String timestamp = String.valueOf(System.currentTimeMillis());
@@ -47,84 +55,43 @@ public class MarvelService {
         return auth;
     }
 
-    public List<MarvelCharacter> getCharacters() {
+    public ResultContainer<MarvelCharacter> getCharacters(int offset, int limit) {
         Map<String, String> auth = createAuth();
-        Map<String, String> pagination = new HashMap<>(); //TODO pagination map;
 
+        Map<String, String> pagination = new HashMap<>();
+        pagination.put("offset", String.valueOf(offset));
+        pagination.put("limit", String.valueOf(limit));
+
+        Call<ResultWrapper<MarvelCharacter>> call = _api.getCharacters(auth, pagination);
         try {
-            Response<ResultWrapper<MarvelCharacter>> response = _api.getCharacters(auth, pagination).execute();
-            if (response.isSuccessful()) {
-                ResultWrapper<MarvelCharacter> result = response.body();
-                if (result.getCode() == 200) {
-                    ResultContainer<MarvelCharacter> container = result.getData();
-                    return container.getResults();
-                } else {
-                    Log.e("result error", "result code: " + result.getStatus());
-                }
-            } else {
-                Log.e("response error", "response code: " + response.code());
-                Log.e("response error body", response.errorBody().string());
-            }
-        } catch (IOException e) {
-            Log.e("execute error", e.getMessage(), e);
+            return apiGetList(call);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
+    }
 
+    protected <T> ResultContainer<T> apiGetList(Call<ResultWrapper<T>> call) throws Exception {
+        try {
+            Response<ResultWrapper<T>> response = call.execute();
+            if (!response.isSuccessful() || response.body() == null) {
+                Log.e("Response error", "response code: " + response.code());
+                Log.e("Response error body", response.errorBody() != null
+                        ? response.errorBody().string() : response.message());
+                throw new Exception("Erro na resposta: " + response.code());
+            }
 
-        ArrayList<MarvelCharacter> list = new ArrayList<>();
+            ResultWrapper<T> result = response.body();
+            if (result.getCode() != 200) {
+                Log.e("Result error", "result code: " + result.getStatus());
+                throw new Exception("Erro no resultado: " + result.getStatus());
+            }
 
-        MarvelCharacter ch = new MarvelCharacter();
-        ch.setName("Abyss");
-        ch.setId(123);
-        MarvelImage img = new MarvelImage();
-        img.setExtension("jpg");
-        img.setPath("http://i.annihil.us/u/prod/marvel/i/mg/9/30/535feab462a64");
-        ch.setThumbnail(img);
-        list.add(ch);
+            return result.getData();
 
-        MarvelCharacter ch2 = new MarvelCharacter();
-        ch2.setName("3-D Man");
-        ch2.setId(8957);
-        MarvelImage img2 = new MarvelImage();
-        img2.setExtension("jpg");
-        img2.setPath("http://i.annihil.us/u/prod/marvel/i/mg/c/e0/535fecbbb9784");
-        ch2.setThumbnail(img2);
-        list.add(ch2);
-
-        MarvelCharacter ch3 = new MarvelCharacter();
-        ch3.setName("A-Bomb (HAS)");
-        ch3.setId(6516);
-        ch3.setDescription("Rick Jones has been Hulk's best bud since day one, but now he's more than a friend...he's a teammate! Transformed by a Gamma energy explosion, A-Bomb's thick, armored skin is just as strong and powerful as it is blue. And when he curls into action, he uses it like a giant bowling ball of destruction! ");
-        MarvelImage img3 = new MarvelImage();
-        img3.setExtension("jpg");
-        img3.setPath("http://i.annihil.us/u/prod/marvel/i/mg/3/20/5232158de5b16");
-        ch3.setThumbnail(img3);
-        list.add(ch3);
-
-//        list.add(ch);
-//        list.add(ch2);
-//        list.add(ch3);
-//
-//        list.add(ch);
-//        list.add(ch2);
-//        list.add(ch3);
-//
-//        list.add(ch);
-//        list.add(ch2);
-//        list.add(ch3);
-//
-//        list.add(ch);
-//        list.add(ch2);
-//        list.add(ch3);
-//
-//        list.add(ch);
-//        list.add(ch2);
-//        list.add(ch3);
-//
-//        list.add(ch);
-//        list.add(ch2);
-//        list.add(ch3);
-
-
-        return list;
+        } catch (IOException e) {
+            Log.e("Execute error", e.getMessage(), e);
+            throw new Exception("Erro ao executar chamada: " + e.getMessage());
+        }
     }
 }

@@ -7,53 +7,59 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.paging.PagedListAdapter;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.antoniogottsfritz.desafio_android.Model.MarvelCharacter;
 import com.antoniogottsfritz.desafio_android.R;
 import com.bumptech.glide.RequestManager;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import java.util.List;
-
-class CharactersAdapter extends RecyclerView.Adapter {
-    private List<MarvelCharacter> characters;
+class CharactersAdapter extends PagedListAdapter<MarvelCharacter, CharactersAdapter.CharacterViewHolder> {
     private final RequestManager glide;
 
     private onCharacterSelectedListener characterSelectedListener;
 
-    public CharactersAdapter(List<MarvelCharacter> characters, RequestManager glideReqMgr) {
-        this.characters = characters;
+    private static DiffUtil.ItemCallback<MarvelCharacter> DiffCallback =
+            new DiffUtil.ItemCallback<MarvelCharacter>() {
+                @Override
+                public boolean areItemsTheSame(MarvelCharacter oldItem, MarvelCharacter newItem) {
+                    return oldItem.getId() == newItem.getId();
+                }
+
+                @Override
+                public boolean areContentsTheSame(MarvelCharacter oldItem, MarvelCharacter newItem) {
+                    return oldItem.getId() == newItem.getId();
+                }
+            };
+
+    CharactersAdapter(RequestManager glideReqMgr) {
+        super(DiffCallback);
         glide = glideReqMgr;
     }
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.character_item, parent, false);
+    public CharacterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.character_row, parent, false);
         return new CharacterViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        MarvelCharacter character = characters.get(position);
+    public void onBindViewHolder(@NonNull CharacterViewHolder holder, int position) {
+        MarvelCharacter character = getItem(position);
 
-        if (holder instanceof CharacterViewHolder) {
-            ((CharacterViewHolder) holder).Character = character;
+        if (character != null) {
+            holder.Character = character;
 
-            TextView nameChar = holder.itemView.findViewById((R.id.nameChar));
-            nameChar.setText(character.getName());
+            holder.nameChar.setText(character.getName());
 
-            ImageView thumbChar = holder.itemView.findViewById(R.id.thumbChar);
-            String imgUrl = character.getThumbnail().getUrl("landscape_medium");
-            glide.load(imgUrl).into(thumbChar);
-            glide.downloadOnly().diskCacheStrategy(DiskCacheStrategy.DATA).load(character.getThumbnail().getUrl("landscape_amazing")).submit();
+            ImageView thumbChar = holder.thumbChar;
+            String imgUrl = character.getThumbnail().getUrl("standard_medium");
+            glide.load(imgUrl)
+                    .thumbnail(glide.load(R.drawable.loading))
+                    .into(thumbChar);
         }
-    }
-
-    @Override
-    public int getItemCount() {
-        return characters.size();
     }
 
     public void setOnCharacterSelectedListener(onCharacterSelectedListener listener) {

@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import com.antoniogottsfritz.desafio_android.Model.MarvelCharacter;
 import com.antoniogottsfritz.desafio_android.R;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 public class CharacterDetailFragment extends Fragment {
     private static final String ARG_CHARACTER_ID = "character";
@@ -44,8 +43,9 @@ public class CharacterDetailFragment extends Fragment {
 
         ImageView heroChar = view.findViewById(R.id.heroChar);
         Glide.with(this)
-                .load(_character.getThumbnail().getUrl("landscape_amazing"))
-                .diskCacheStrategy(DiskCacheStrategy.DATA)
+                .load(_character.getThumbnail().getUrl("standard_incredible"))
+                .thumbnail(Glide.with(this)
+                        .load(_character.getThumbnail().getUrl("standard_medium")))
                 .into(heroChar);
 
         TextView titleChar = view.findViewById(R.id.titleChar);

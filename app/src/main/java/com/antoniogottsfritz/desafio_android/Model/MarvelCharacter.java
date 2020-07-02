@@ -12,7 +12,7 @@ public class MarvelCharacter implements Serializable {
 
     @SerializedName("name")
     @Expose
-    private String Name;
+    public String Name;
 
     @SerializedName("description")
     @Expose
