@@ -1,14 +1,75 @@
 package com.antoniogottsfritz.desafio_android.Service;
 
+import android.util.Log;
+
+import com.antoniogottsfritz.desafio_android.BuildConfig;
+import com.antoniogottsfritz.desafio_android.Model.API.ResultContainer;
+import com.antoniogottsfritz.desafio_android.Model.API.ResultWrapper;
 import com.antoniogottsfritz.desafio_android.Model.MarvelCharacter;
 import com.antoniogottsfritz.desafio_android.Model.MarvelImage;
+import com.antoniogottsfritz.desafio_android.Util;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MarvelService {
+    private static final int PAGE_SIZE = 20;
+    private static final String API_URL = "https://gateway.marvel.com/";
+
+    private MarvelApi _api;
+
+    public MarvelService() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(API_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        _api = retrofit.create(MarvelApi.class);
+    }
+
+    public Map<String, String> createAuth() {
+        String timestamp = String.valueOf(System.currentTimeMillis());
+        String toHash = timestamp + BuildConfig.MARVEL_PRIVATE_KEY + BuildConfig.MARVEL_PUBLIC_KEY;
+        String md5 = Util.md5(toHash);
+
+        Map<String, String> auth = new HashMap<>();
+        auth.put("ts", timestamp);
+        auth.put("apikey", BuildConfig.MARVEL_PUBLIC_KEY);
+        auth.put("hash", md5);
+
+        return auth;
+    }
 
     public List<MarvelCharacter> getCharacters() {
+        Map<String, String> auth = createAuth();
+        Map<String, String> pagination = new HashMap<>(); //TODO pagination map;
+
+        try {
+            Response<ResultWrapper<MarvelCharacter>> response = _api.getCharacters(auth, pagination).execute();
+            if (response.isSuccessful()) {
+                ResultWrapper<MarvelCharacter> result = response.body();
+                if (result.getCode() == 200) {
+                    ResultContainer<MarvelCharacter> container = result.getData();
+                    return container.getResults();
+                } else {
+                    Log.e("result error", "result code: " + result.getStatus());
+                }
+            } else {
+                Log.e("response error", "response code: " + response.code());
+                Log.e("response error body", response.errorBody().string());
+            }
+        } catch (IOException e) {
+            Log.e("execute error", e.getMessage(), e);
+        }
+
+
         ArrayList<MarvelCharacter> list = new ArrayList<>();
 
         MarvelCharacter ch = new MarvelCharacter();

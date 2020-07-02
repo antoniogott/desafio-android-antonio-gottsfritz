@@ -1,13 +1,33 @@
 package com.antoniogottsfritz.desafio_android.Model;
 
-import java.util.ArrayList;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 public class Comic {
+    @SerializedName("id")
+    @Expose
     private int Id;
+
+    @SerializedName("title")
+    @Expose
     private String Title;
+
+    @SerializedName("issueNumber")
+    @Expose
     private int IssueNumber;
+
+    @SerializedName("description")
+    @Expose
     private String Description;
-    private ArrayList<ComicPrice> Prices;
+
+    @SerializedName("prices")
+    @Expose
+    private List<ComicPrice> Prices;
+
+    @SerializedName("thumbnail")
+    @Expose
     private MarvelImage Thumbnail;
 
     public int getId() {
@@ -42,11 +62,11 @@ public class Comic {
         Description = description;
     }
 
-    public ArrayList<ComicPrice> getPrices() {
+    public List<ComicPrice> getPrices() {
         return Prices;
     }
 
-    public void setPrices(ArrayList<ComicPrice> prices) {
+    public void setPrices(List<ComicPrice> prices) {
         Prices = prices;
     }
 
@@ -56,5 +76,10 @@ public class Comic {
 
     public void setThumbnail(MarvelImage thumbnail) {
         Thumbnail = thumbnail;
+    }
+
+    static class ComicPrice {
+        private String Type;
+        private Float Price;
     }
 }

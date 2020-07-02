@@ -1,11 +1,25 @@
 package com.antoniogottsfritz.desafio_android.Model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class MarvelCharacter implements Serializable {
+    @SerializedName("id")
+    @Expose
     private int Id;
+
+    @SerializedName("name")
+    @Expose
     private String Name;
+
+    @SerializedName("description")
+    @Expose
     private String Description;
+
+    @SerializedName("thumbnail")
+    @Expose
     private MarvelImage Thumbnail;
 
     public int getId() {

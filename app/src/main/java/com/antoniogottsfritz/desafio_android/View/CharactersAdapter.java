@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.antoniogottsfritz.desafio_android.Model.MarvelCharacter;
 import com.antoniogottsfritz.desafio_android.R;
 import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
 
@@ -46,6 +47,7 @@ class CharactersAdapter extends RecyclerView.Adapter {
             ImageView thumbChar = holder.itemView.findViewById(R.id.thumbChar);
             String imgUrl = character.getThumbnail().getUrl("landscape_medium");
             glide.load(imgUrl).into(thumbChar);
+            glide.downloadOnly().diskCacheStrategy(DiskCacheStrategy.DATA).load(character.getThumbnail().getUrl("landscape_amazing")).submit();
         }
     }
 

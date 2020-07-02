@@ -10,7 +10,6 @@ import com.antoniogottsfritz.desafio_android.Service.MarvelService;
 import java.util.List;
 
 public class CharacterVM extends ViewModel {
-    private static final int PAGE_SIZE = 20;
     private MarvelService marvelService;
 
     private MutableLiveData<List<MarvelCharacter>> characters;
@@ -28,6 +27,7 @@ public class CharacterVM extends ViewModel {
     }
 
     private List<MarvelCharacter> fetchCharacters() {
-        return marvelService.getCharacters();
+        List<MarvelCharacter> characters = marvelService.getCharacters();
+        return characters;
     }
 }

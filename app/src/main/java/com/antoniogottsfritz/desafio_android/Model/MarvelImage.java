@@ -1,9 +1,17 @@
 package com.antoniogottsfritz.desafio_android.Model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Objects;
 
 public class MarvelImage {
+    @SerializedName("path")
+    @Expose
     private String Path;
+
+    @SerializedName("extension")
+    @Expose
     private String Extension;
 
     public String getPath() {
