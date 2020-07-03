@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="#EEE"
     tools:context=".View.CharacterDetailFragment">
 
     <ImageView
         android:id="@+id/heroChar"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="450dp"
         android:scaleType="centerCrop"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
@@ -19,11 +23,15 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginVertical="10dp"
+        android:fontFamily="sans-serif-condensed"
         android:gravity="center"
         android:textColor="@android:color/black"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:textStyle="bold"
-        tools:text="Spider Man" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/heroChar"
+        tools:text="Spider-Man" />
 
     <TextView
         android:id="@+id/descChar"
@@ -31,9 +39,35 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:ellipsize="end"
+        android:fontFamily="serif"
         android:justificationMode="inter_word"
         android:maxLines="3"
-        android:textSize="20dp"
-        tools:text="Spider Man" />
+        android:textSize="20sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleChar"
+        tools:text="Spider-Man" />
 
-</LinearLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <Button
+            android:id="@+id/btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/button_rounded"
+            android:fontFamily="sans-serif-condensed"
+            android:text="HQ mais cara"
+            android:textColor="@android:color/white"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

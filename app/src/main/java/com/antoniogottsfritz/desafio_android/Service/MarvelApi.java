@@ -17,6 +17,7 @@ public interface MarvelApi {
                                                        @QueryMap Map<String, String> pagination);
 
     @GET("v1/public/characters/{id}/comics")
-    Call<ResultWrapper<Comic>> getCharacterComics(@QueryMap Map<String, String> auth,
-                                                  @Path("id") int characterId);
+    Call<ResultWrapper<Comic>> getCharacterComics(@Path("id") int characterId,
+                                                  @QueryMap Map<String, String> auth,
+                                                  @QueryMap Map<String, String> pagination);
 }

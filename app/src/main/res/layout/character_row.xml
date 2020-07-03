@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#EEE"
     android:layout_height="90dp">
 
     <ImageView
@@ -21,12 +22,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:fontFamily="sans-serif-condensed"
-        android:textSize="22dp"
+        android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/thumbChar"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Spider Man" />
+        tools:text="Spider-Man" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.antoniogottsfritz.desafio_android.Model;
 
+import com.antoniogottsfritz.desafio_android.Model.API.ResourceList;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -21,6 +22,10 @@ public class MarvelCharacter implements Serializable {
     @SerializedName("thumbnail")
     @Expose
     private MarvelImage Thumbnail;
+
+    @SerializedName("comics")
+    @Expose
+    private ResourceList ComicList;
 
     public int getId() {
         return Id;
@@ -52,5 +57,13 @@ public class MarvelCharacter implements Serializable {
 
     public void setThumbnail(MarvelImage thumbnail) {
         Thumbnail = thumbnail;
+    }
+
+    public ResourceList getComicList() {
+        return ComicList;
+    }
+
+    public void setComicList(ResourceList comicList) {
+        ComicList = comicList;
     }
 }

@@ -16,7 +16,7 @@ public class Comic {
 
     @SerializedName("issueNumber")
     @Expose
-    private int IssueNumber;
+    private float IssueNumber;
 
     @SerializedName("description")
     @Expose
@@ -29,6 +29,8 @@ public class Comic {
     @SerializedName("thumbnail")
     @Expose
     private MarvelImage Thumbnail;
+
+    private float HighestPrice;
 
     public int getId() {
         return Id;
@@ -46,11 +48,11 @@ public class Comic {
         Title = title;
     }
 
-    public int getIssueNumber() {
+    public float getIssueNumber() {
         return IssueNumber;
     }
 
-    public void setIssueNumber(int issueNumber) {
+    public void setIssueNumber(float issueNumber) {
         IssueNumber = issueNumber;
     }
 
@@ -78,8 +80,37 @@ public class Comic {
         Thumbnail = thumbnail;
     }
 
-    static class ComicPrice {
+    public float getHighestPrice() {
+        return HighestPrice;
+    }
+
+    public void setHighestPrice(float highestPrice) {
+        HighestPrice = highestPrice;
+    }
+
+    public static class ComicPrice {
+        @SerializedName("type")
+        @Expose
         private String Type;
+
+        @SerializedName("price")
+        @Expose
         private Float Price;
+
+        public String getType() {
+            return Type;
+        }
+
+        public void setType(String type) {
+            Type = type;
+        }
+
+        public Float getPrice() {
+            return Price;
+        }
+
+        public void setPrice(Float price) {
+            Price = price;
+        }
     }
 }

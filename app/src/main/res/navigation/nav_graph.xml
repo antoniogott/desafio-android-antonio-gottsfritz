@@ -26,5 +26,21 @@
         <argument
             android:name="character"
             app:argType="com.antoniogottsfritz.desafio_android.Model.MarvelCharacter" />
+        <action
+            android:id="@+id/action_comicDetail"
+            app:destination="@id/comicDetailFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/comicDetailFragment"
+        android:name="com.antoniogottsfritz.desafio_android.ComicDetailFragment"
+        android:label="comic_detail"
+        tools:layout="@layout/comic_detail">
+        <argument
+            android:name="characterId"
+            app:argType="integer" />
     </fragment>
 </navigation>

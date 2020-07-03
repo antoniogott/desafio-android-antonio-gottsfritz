@@ -7,17 +7,22 @@ import androidx.paging.PagedList;
 import androidx.paging.PositionalDataSource;
 
 import com.antoniogottsfritz.desafio_android.Model.CharacterDataSourceFactory;
+import com.antoniogottsfritz.desafio_android.Model.Comic;
 import com.antoniogottsfritz.desafio_android.Model.MarvelCharacter;
+import com.antoniogottsfritz.desafio_android.Service.MarvelService;
 
 public class CharacterVM extends ViewModel {
     private static final int PAGE_SIZE = 20;
 
     public LiveData<PagedList<MarvelCharacter>> charactersPagedList;
-    LiveData<PositionalDataSource<MarvelCharacter>> liveDataSource;
+    private MarvelService _service;
+    private LiveData<PositionalDataSource<MarvelCharacter>> liveCharacterDataSource;
 
     public CharacterVM() {
+        _service = MarvelService.getInstance();
+
         CharacterDataSourceFactory characterSourceFactory = new CharacterDataSourceFactory();
-        liveDataSource = characterSourceFactory.getSourceLiveData();
+        liveCharacterDataSource = characterSourceFactory.getSourceLiveData();
 
         PagedList.Config pagedListConfig =
                 (new PagedList.Config.Builder())
@@ -31,8 +36,9 @@ public class CharacterVM extends ViewModel {
                 .build();
     }
 
-    /*private List<MarvelCharacter> fetchCharacters() {
-        List<MarvelCharacter> characters = marvelService.getCharacters();
-        return characters;
-    }*/
+    public LiveData<Comic> getMostExpensiveComic(int characterId) {
+//        Comic mostExpensiveComic = MarvelService.getInstance().getMostExpensiveComic(characterId);
+//        comic.postValue(mostExpensiveComic);
+        return _service.getMostExpensiveComic(characterId);
+    }
 }
